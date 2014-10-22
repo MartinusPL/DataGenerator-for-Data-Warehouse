@@ -9,7 +9,7 @@ namespace DataGenerator
 {
     class Program
     {
-        public const string path = @"C:\tmp\auto_erase\";
+        public const string Path = @"C:\tmp\auto_erase\";
 
         static void Main(string[] args)
         {
@@ -52,7 +52,7 @@ namespace DataGenerator
 #endregion
 
             #region parametry wejsciowe
-            int liczbaRekordow = 100;
+            int liczbaRekordow = 1000;
             //System.Console.Write("Wpisz liczbe rekordow: ");
             //liczbaRekordow = System.Convert.ToInt32(System.Console.ReadLine());
 
@@ -151,15 +151,22 @@ namespace DataGenerator
             #endregion
             #region przynaleznosc
             var przynaleznosci = new HashSet<Przynaleznosc>();
-            while(przynaleznosci.Count < liczbaZespolow){
-                var ID_pracownika = pracownicy.ElementAt(rand.Next(pracownicy.Count));
-                var ID_zespolu = zespoly.ElementAt(rand.Next(zespoly.Count));
-                var przynaleznosc = new Przynaleznosc()
+            foreach (var zespol in zespoly)
+            {
+                var liczbaCzlonkow = rand.Next(2, 4);
+
+                for (int i = 0; i < liczbaCzlonkow; i++)
                 {
-                    PESEL = ID_pracownika.PESEL,
-                    ID_zespol = ID_zespolu.ID_zespolu
-                };
-                przynaleznosci.Add(przynaleznosc);
+                    var ID_pracownika = pracownicy.ElementAt(rand.Next(pracownicy.Count));
+                    var ID_zespolu = zespol;
+                    var przynaleznosc = new Przynaleznosc()
+                    {
+                        PESEL = ID_pracownika.PESEL,
+                        ID_zespol = ID_zespolu.ID_zespolu
+                    };
+                    if (!przynaleznosci.Contains(przynaleznosc))
+                        przynaleznosci.Add(przynaleznosc);
+                }
             }
             #endregion
             #region rozmowy
@@ -283,67 +290,67 @@ namespace DataGenerator
             #region serializacja
             string txt;
             txt = ExtensionMethods.CSV.ToCsv(rodzajeZespolu);
-            using (var outfile = new StreamWriter(path + "rodzajeZespolu.csv"))
+            using (var outfile = new StreamWriter(Path + "rodzajeZespolu.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(funkcjePracownika);
-            using (var outfile = new StreamWriter(path + "funkcjePracownika.csv"))
+            using (var outfile = new StreamWriter(Path + "funkcjePracownika.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(kategorieWyjazdow);
-            using (var outfile = new StreamWriter(path + "kategorieWyjazdow.csv"))
+            using (var outfile = new StreamWriter(Path + "kategorieWyjazdow.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(pracownicy);
-            using (var outfile = new StreamWriter(path + "pracownicy.csv"))
+            using (var outfile = new StreamWriter(Path + "pracownicy.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(pojazdy);
-            using (var outfile = new StreamWriter(path + "pojazdy.csv"))
+            using (var outfile = new StreamWriter(Path + "pojazdy.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(zespoly);
-            using (var outfile = new StreamWriter(path + "zespoly.csv"))
+            using (var outfile = new StreamWriter(Path + "zespoly.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(przynaleznosci);
-            using (var outfile = new StreamWriter(path + "przynaleznosci.csv"))
+            using (var outfile = new StreamWriter(Path + "przynaleznosci.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(rozmowy);
-            using (var outfile = new StreamWriter(path + "rozmowy.csv"))
+            using (var outfile = new StreamWriter(Path + "rozmowy.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(wyjazdy);
-            using (var outfile = new StreamWriter(path + "wyjazdy.csv"))
+            using (var outfile = new StreamWriter(Path + "wyjazdy.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(arkusze1);
-            using (var outfile = new StreamWriter(path + "arkusze1.csv"))
+            using (var outfile = new StreamWriter(Path + "arkusze1.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(arkusze2);
-            using (var outfile = new StreamWriter(path + "arkusze2.csv"))
+            using (var outfile = new StreamWriter(Path + "arkusze2.csv"))
             {
                 outfile.Write(txt.ToString());
             }

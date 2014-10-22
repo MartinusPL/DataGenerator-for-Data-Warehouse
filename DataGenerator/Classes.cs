@@ -85,7 +85,7 @@ namespace HD
 
         public override string ToString()
         {
-            return Nr_rejestracyjny + CSV.separator + Marka + CSV.separator + Model + CSV.separator + Aktywny;
+            return Nr_rejestracyjny + CSV.separator + Marka + CSV.separator + Model + CSV.separator + (Aktywny ? "1" : "0");
         }
     }
     public class Zespol : IComparable
@@ -148,7 +148,7 @@ namespace HD
         }
         public override string ToString()
         {
-            return ID_wyjazdu + CSV.separator + ID_zespolu + CSV.separator + ID_rozmowy + CSV.separator + Data + CSV.separator + ID_kategorii + CSV.separator + Adres_miasto + CSV.separator + Adres_ulica + CSV.separator + Adres_nr_domu + CSV.separator + Adres_nr_lokalu + CSV.separator + Dodatkowe_informacje; 
+            return ID_wyjazdu + CSV.separator + ID_zespolu + CSV.separator + ID_rozmowy + CSV.separator + Data + CSV.separator + ID_kategorii + CSV.separator + Kod_wyjazdu + CSV.separator + Adres_miasto + CSV.separator + Adres_ulica + CSV.separator + Adres_nr_domu + CSV.separator + Adres_nr_lokalu + CSV.separator + Dodatkowe_informacje; 
         } 
     }
     public class Przynaleznosc : IComparable 
