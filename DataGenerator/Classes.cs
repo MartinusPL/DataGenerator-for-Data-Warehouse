@@ -190,6 +190,11 @@ namespace HD
             this.Id = id;
             this.Nazwa = nazwa;
         }
+
+        public override string ToString()
+        {
+            return this.Id + CSV.separator + this.Nazwa;
+        }
     }
 
     public class KategoriaWyjazdu
@@ -203,6 +208,11 @@ namespace HD
             this.Id = id;
             this.Nazwa = nazwa;
         }
+
+        public override string ToString()
+        {
+            return this.Id + CSV.separator + this.Nazwa;
+        }
     }
 
     public class FunkcjaPracownika
@@ -215,6 +225,11 @@ namespace HD
         {
             this.Id = id;
             this.Nazwa = nazwa;
+        }
+
+        public override string ToString()
+        {
+            return this.Id + CSV.separator + this.Nazwa;
         }
     }
 

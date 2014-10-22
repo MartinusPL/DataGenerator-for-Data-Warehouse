@@ -9,6 +9,8 @@ namespace DataGenerator
 {
     class Program
     {
+        public const string path = @"C:\tmp\auto_erase\";
+
         static void Main(string[] args)
         {
             #region slowniki
@@ -73,6 +75,7 @@ namespace DataGenerator
                                               "Witt","Lietz","Patz","Kortas","Kiedrowicz","Mazur","Kobus","Gruchala","Galik","Debski",
                                               "Daniels","Frymark","Klepin","Meller","Rozek","Glock","Krzoska","Wyrwicki","Klawikowski","Lubicz"};
             var pracownicy = new HashSet<Pracownik>();
+            var dyspozytorzy = new HashSet<Pracownik>();
             while (pracownicy.Count < iloscPracownikow)
             {
                 var imie = imiona.ElementAt(rand.Next(imiona.Count));
@@ -84,6 +87,9 @@ namespace DataGenerator
 
                 var pracownik = new Pracownik() { ID_funkcji = funkcja.Id, Imie = imie, Nazwisko = nazwisko, PESEL = pesel_str };
                 pracownicy.Add(pracownik);
+
+                if (funkcja.Nazwa == "Dyspozytor")
+                    dyspozytorzy.Add(pracownik);
             }
             #endregion
             #region pojazdy
@@ -179,7 +185,7 @@ namespace DataGenerator
 
             while( rozmowy.Count< liczbaRekordow){
                 var ID_rozmowy = rozmowy.Count +1;
-                var ID_pracownika = pracownicy.ElementAt(rand.Next(pracownicy.Count));
+                var ID_pracownika = dyspozytorzy.ElementAt(rand.Next(dyspozytorzy.Count));
                 //Data jest totalnie losowa nie ma kolejnosci
                 int range = (dateend-datestart).Days;
                 DateTime data= datestart.AddDays(rand.Next(range)).AddHours(rand.Next(0, 24)).AddMinutes(rand.Next(0, 60)).AddSeconds(rand.Next(0, 60));
@@ -276,50 +282,68 @@ namespace DataGenerator
 
             #region serializacja
             string txt;
+            txt = ExtensionMethods.CSV.ToCsv(rodzajeZespolu);
+            using (var outfile = new StreamWriter(path + "rodzajeZespolu.csv"))
+            {
+                outfile.Write(txt.ToString());
+            }
+
+            txt = ExtensionMethods.CSV.ToCsv(funkcjePracownika);
+            using (var outfile = new StreamWriter(path + "funkcjePracownika.csv"))
+            {
+                outfile.Write(txt.ToString());
+            }
+
+            txt = ExtensionMethods.CSV.ToCsv(kategorieWyjazdow);
+            using (var outfile = new StreamWriter(path + "kategorieWyjazdow.csv"))
+            {
+                outfile.Write(txt.ToString());
+            }
+
             txt = ExtensionMethods.CSV.ToCsv(pracownicy);
-            using (var outfile = new StreamWriter("pracownicy.csv"))
+            using (var outfile = new StreamWriter(path + "pracownicy.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(pojazdy);
-            using (var outfile = new StreamWriter("pojazdy.csv"))
+            using (var outfile = new StreamWriter(path + "pojazdy.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(zespoly);
-            using (var outfile = new StreamWriter("zespoly.csv"))
+            using (var outfile = new StreamWriter(path + "zespoly.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(przynaleznosci);
-            using (var outfile = new StreamWriter("przynaleznosci.csv"))
+            using (var outfile = new StreamWriter(path + "przynaleznosci.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(rozmowy);
-            using (var outfile = new StreamWriter("rozmowy.csv"))
+            using (var outfile = new StreamWriter(path + "rozmowy.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(wyjazdy);
-            using (var outfile = new StreamWriter("wyjazdy.csv"))
+            using (var outfile = new StreamWriter(path + "wyjazdy.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(arkusze1);
-            using (var outfile = new StreamWriter("arkusze1.csv"))
+            using (var outfile = new StreamWriter(path + "arkusze1.csv"))
             {
                 outfile.Write(txt.ToString());
             }
 
             txt = ExtensionMethods.CSV.ToCsv(arkusze2);
-            using (var outfile = new StreamWriter("arkusze2.csv"))
+            using (var outfile = new StreamWriter(path + "arkusze2.csv"))
             {
                 outfile.Write(txt.ToString());
             }
