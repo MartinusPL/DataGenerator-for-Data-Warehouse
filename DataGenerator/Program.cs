@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using HD;
+using ExtensionMethods;
 
 namespace DataGenerator
 {
@@ -14,7 +13,7 @@ namespace DataGenerator
         {
             #region slowniki
             List < RodzajZespolu >  rodzajeZespolu;
-            rodzajeZespolu = new List<RodzajZespolu>()
+            rodzajeZespolu = new List<RodzajZespolu>
             {
                 new RodzajZespolu(1,"Podstawowy"),
                 new RodzajZespolu(2,"Specjalistyczny"),
@@ -23,26 +22,26 @@ namespace DataGenerator
             };
 
             List<FunkcjaPracownika> funkcjePracownika;
-            funkcjePracownika = new List<FunkcjaPracownika>()
+            funkcjePracownika = new List<FunkcjaPracownika>
             {
                 new FunkcjaPracownika(1, "Dyspozytor"),
                 new FunkcjaPracownika(2, "Ratownik kierowca"),
                 new FunkcjaPracownika(3, "Ratownik medyczny"),
                 new FunkcjaPracownika(4, "Ratownik medyczny kierowca"),
-                new FunkcjaPracownika(5, "Pielęgniarka"),
+                new FunkcjaPracownika(5, "Pielegniarka"),
                 new FunkcjaPracownika(6, "Lekarz")
             };
 
             List<KategoriaWyjazdu> kategorieWyjazdow;
-            kategorieWyjazdow = new List<KategoriaWyjazdu>()
+            kategorieWyjazdow = new List<KategoriaWyjazdu>
             {
                 new KategoriaWyjazdu(1,"Wypadek komunikacyjny"),
-                new KategoriaWyjazdu(2,"Nagłe zatrzymanie krążenia"),
-                new KategoriaWyjazdu(3,"Poród"),
+                new KategoriaWyjazdu(2,"Nagle zatrzymanie krazenia"),
+                new KategoriaWyjazdu(3,"Porod"),
                 new KategoriaWyjazdu(4,"Transport medyczny"),
-                new KategoriaWyjazdu(5,"Bóle w klatce piersiowej"),
-                new KategoriaWyjazdu(6,"Złamania kończyn"),
-                new KategoriaWyjazdu(7,"Utrata przytomności"),
+                new KategoriaWyjazdu(5,"Bole w klatce piersiowej"),
+                new KategoriaWyjazdu(6,"Zlamania konczyn"),
+                new KategoriaWyjazdu(7,"Utrata przytomnosci"),
                 new KategoriaWyjazdu(8,"Krwotoki"),
                 new KategoriaWyjazdu(9,"Urazy"),
                 new KategoriaWyjazdu(10,"Inne")
@@ -55,8 +54,8 @@ namespace DataGenerator
             //System.Console.Write("Wpisz liczbe rekordow: ");
             //liczbaRekordow = System.Convert.ToInt32(System.Console.ReadLine());
 
-            DateTime datestart = System.Convert.ToDateTime("2014-01-01");
-            DateTime dateend = System.Convert.ToDateTime("2014-10-10");;
+            DateTime datestart = Convert.ToDateTime("2014-01-01");
+            DateTime dateend = Convert.ToDateTime("2014-10-10");;
             //System.Console.Write("Wpisz date poczatkowa (RRRR-MM-DD): ");
             //datestart = System.Convert.ToDateTime(System.Console.ReadLine());
             //System.Console.Write("Wpisz date koncowa (RRRR-MM-DD): ");
@@ -64,9 +63,15 @@ namespace DataGenerator
             #endregion
 
             var rand = new Random(Environment.TickCount);
+
+            #region pracownicy
             var iloscPracownikow = rand.Next(50, 100);
-            var imiona = new List<string>(){"Adam","Ewa","Marek","Danuta","Kazimierz"};
-            var nazwiska = new List<string>(){"Kubale","Zawadzka","Jastrzębski","Ocetkiewicz","Turowski"};
+            var imiona = new List<string>(){"Adam","Ewa","Marek","Danuta","Kazimierz","Dawid","Marcin","Patrycja","Adrian","Pawel",
+                                            "Jakub","Igor","Maksymilian","Edyta","Barbara","Julia","Natalia","Blanka","Laura","lukasz",
+                                            "Michal","Andrzej","Kamil","Jan","Julian","Magdalena","Paulina","Jedrzej","Mateusz","Grzegorz"};
+            var nazwiska = new List<string>(){"Kubale","Goczyla","Jastrzebski","Ocetkiewicz","Turowski","Buclaw","Grzesiak","Nowak","Wesolowski","Ziemski",
+                                              "Witt","Lietz","Patz","Kortas","Kiedrowicz","Mazur","Kobus","Gruchala","Galik","Debski",
+                                              "Daniels","Frymark","Klepin","Meller","Rozek","Glock","Krzoska","Wyrwicki","Klawikowski","Lubicz"};
             var pracownicy = new HashSet<Pracownik>();
             while (pracownicy.Count < iloscPracownikow)
             {
@@ -80,10 +85,13 @@ namespace DataGenerator
                 var pracownik = new Pracownik() { ID_funkcji = funkcja.Id, Imie = imie, Nazwisko = nazwisko, PESEL = pesel_str };
                 pracownicy.Add(pracownik);
             }
-
+            #endregion
+            #region pojazdy
             var iloscPojazdow = rand.Next(20, 30);
-            var marki = new List<string>() { "Opel", "Mercedes", "Ford", "Renault", "Audi", "Peugot" };
-            var modele = new List<string>() { "A3", "C7", "Kaktus", "Sprinter", "4", "5", "232", "512", "1024" };
+            var marki = new List<string>() { "Opel", "Mercedes", "Ford", "Renault", "Audi", "Peugeot","Saab" ,"Suzuki","Mitsubushi","Ferrari",
+                                             "Honda","Hyundai","Alfa Romeo","Porsche","Seat","Subaru","Mazda","Dodge","Daewoo","Dacia"};
+            var modele = new List<string>() { "A3", "C7", "Kaktus", "Sprinter", "4", "5", "Astra", "Benz", "Transit", "A4",
+                                              "Boxer","Curier","Passat","Clio","Partner","Combo","Ducato","Jumper","Movano","Berlingo" };
             var pojazdy = new HashSet<Pojazd>();
             while (pojazdy.Count < iloscPojazdow)
             {
@@ -97,10 +105,11 @@ namespace DataGenerator
 
                 var pojazd = new Pojazd() {Nr_rejestracyjny = nr_rej, Marka = marka, Model = model, Aktywny = aktywny_bool};
                 pojazdy.Add(pojazd);
-
                 System.Console.WriteLine(pojazd);
-            }
 
+            }
+            #endregion
+            #region zespoly
             var timeDelta = dateend - datestart;
             var liczbaDni = timeDelta.Days;
             var liczbaZespolow = 15*2*liczbaDni;
@@ -116,20 +125,208 @@ namespace DataGenerator
                     var idPojazdu = pojazdy.ElementAt(rand.Next(pojazdy.Count));
                     var rodzajZespolu = rodzajeZespolu.ElementAt(rand.Next(rodzajeZespolu.Count));
 
+                    var zajety = rand.Next(0, 10);
+                    var zajety_bool = (zajety <= 7);
+
                     var koniec = start + TimeSpan.FromHours(12);
                     var zespol = new Zespol()
                     {
-                        ID_pojazd = idPojazdu.Nr_rejestracyjny,
+                        ID_pojazdu = idPojazdu.Nr_rejestracyjny,
                         ID_rodzaj = rodzajZespolu.Id,
                         ID_zespolu = idZespol,
                         Rozpoczecie_dyzuru = start,
-                        Zakonczenie_dyzuru = koniec
+                        Zakonczenie_dyzuru = koniec,
+                        Zajety = zajety_bool
                     };
-
-                    zespoly.Add(zespol);
+                    zespoly.Add(zespol);                    
                 }
                 start += TimeSpan.FromHours(12);
             }
+            #endregion
+            #region przynaleznosc
+            var przynaleznosci = new HashSet<Przynaleznosc>();
+            while(przynaleznosci.Count < liczbaZespolow){
+                var ID_pracownika = pracownicy.ElementAt(rand.Next(pracownicy.Count));
+                var ID_zespolu = zespoly.ElementAt(rand.Next(zespoly.Count));
+                var przynaleznosc = new Przynaleznosc()
+                {
+                    PESEL = ID_pracownika.PESEL,
+                    ID_zespol = ID_zespolu.ID_zespolu
+                };
+                przynaleznosci.Add(przynaleznosc);
+            }
+            #endregion
+            #region rozmowy
+            var rozmowy = new HashSet<Rozmowa>();
+            var wyjazdy = new HashSet<Wyjazd>();
+            var miasta = new List<string>() { "Gdansk", "Sopot", "Gdynia", "Chwaszczyno", "Pruszcz Gdanski", "zukowo", "Kartuzy", "Tczew", "Puck","Sztum",
+                    "Wejherowo","Pepowo","Przejazdowo","Banino","Miszewo","Borkowo","Glincz","Niestepowo","Kolbudy","Straszyn",
+                    "Suchy Dab", "Tuchom","Czeczewo","Lezno","Cedry Male","Rozyny","Warcz","Piaski","Nowy Dwor Gdanski", "Pszczolki"};
+            var ulice = new List<string>() { "Pomorska", "Wejhera", "Grunwaldzka", "Chlopska", "Gdynska","Jelitkowska","Traugutta","Glowna","Kopernika","Lesna",
+                    "Niemcewicza","Zielona","Kwiatowa","Koscielna", "Szkola","Lipowa","Agrestowa", "Obroncow Wybrzeza","Kolobrzeska","Cystersow",
+                    "Oliwska", "Morska","Jagielonska","Poniatowskiego","Curie-Sklodowskiej","Jana Pawla II","Franciszkanska","Wesola","Brzozowa","Targowa",
+                    "Bema","Sloneczna","Kasztanowa","Rozana" };
+            var info = new List<string>() { "Wysoka goraczka", "Nie dawno przebyta operacja", "Naduzycie alkoholu", "Zaczal sie porod", "Ostatni dom po prawej", "Przyjmuje leki na serce", "Cukrzyca", "Kawalek drogi trzeba isc pieszo" };
+            var leki = new List<string>() { "Acetylsalicylic acid","Amiodarone","Atropinum sulfuricum","Clemastine","Diazepam","Epinephrine bitartrate","Flumazenil",
+                                            "Furosemide","Glucagon hydrochloride","Glucosum 20%","Glucosum 5%","Glyceryl trinitrate","Hydrocortisone","Methylprednisolone",
+                                            "Magnesii sulfuricum","Ketoprofen","Lignocainum hydrochloricum","Midazolam","Metoclopramidum","Morphine sulphate",
+                                            "Naloxonum hydrochloricum","Natrium chloratum 0,9%","Salbutamol","Solutio Ringeri"};
+            var jednostki = new List<string>() { "1 mg", "1 amp", "250 mg", "0,5 mg", "0,25 mg", "1,5 mg", "2,5 mg", "10 mg", "30 mg", "3 mg", "60 mg" };
+
+            var arkusze1 = new HashSet<Arkusz1>();
+            var arkusze2 = new HashSet<Arkusz2>();
+            
+
+            while( rozmowy.Count< liczbaRekordow){
+                var ID_rozmowy = rozmowy.Count +1;
+                var ID_pracownika = pracownicy.ElementAt(rand.Next(pracownicy.Count));
+                //Data jest totalnie losowa nie ma kolejnosci
+                int range = (dateend-datestart).Days;
+                DateTime data= datestart.AddDays(rand.Next(range)).AddHours(rand.Next(0, 24)).AddMinutes(rand.Next(0, 60)).AddSeconds(rand.Next(0, 60));
+               //
+                var czasTrwania = rand.Next(0, 20);
+                var telefon = rand.Next(100000000, 999999999);
+                var rozmowa = new Rozmowa() { 
+                    ID_rozmowa = ID_rozmowy,
+                    PESEL = ID_pracownika.PESEL,
+                    Data = data,
+                    Czas_trwania = czasTrwania,
+                    Nr_telefonu = telefon, 
+                };
+                rozmowy.Add(rozmowa);
+
+                var losowanieWyjazdu = rand.Next(0, 10);
+                if (losowanieWyjazdu > 6) continue; // przerwanie petli
+
+                
+                   
+                 var ID_wyjazdu = wyjazdy.Count + 1;
+                 var ID_zespolu = zespoly.ElementAt(rand.Next(zespoly.Count));
+                 var ID_kategorii = kategorieWyjazdow.ElementAt(rand.Next(kategorieWyjazdow.Count));
+                        var KodWyjazdu = rand.Next(1, 3);
+                        var adresMiasto = miasta.ElementAt(rand.Next(miasta.Count));
+                        var adresUlica = ulice.ElementAt(rand.Next(ulice.Count));
+                        var adresNrBudynku = rand.Next(1, 500).ToString();
+                        var adresLokalu = rand.Next(1, 40).ToString();
+                        var informacje = info.ElementAt(rand.Next(info.Count));
+                        var wyjazd = new Wyjazd()
+                        {
+                            ID_wyjazdu = ID_wyjazdu,
+                            ID_zespolu = ID_zespolu.ID_zespolu,
+                            ID_rozmowy = ID_rozmowy,
+                            Data = data,
+                            ID_kategorii = ID_kategorii.Id,
+                            Kod_wyjazdu = KodWyjazdu,
+                            Adres_miasto = adresMiasto,
+                            Adres_ulica = adresUlica,
+                            Adres_nr_domu = adresNrBudynku,
+                            Adres_nr_lokalu = adresLokalu,
+                            Dodatkowe_informacje = informacje
+
+                        };
+                        wyjazdy.Add(wyjazd);
+
+                        #region EXCEL
+                        //ARKUSZ1
+                        if (rand.Next(0, 10) < 5)
+                        {
+                            for (int j = 0; j < rand.Next(1, 3); j++)
+                            {
+                                var nazwaLeku = leki.ElementAt(rand.Next(leki.Count));
+                                var iloscZuzytychLekow = rand.Next(1, 5);
+                                var jednostkiMiary = jednostki.ElementAt(rand.Next(jednostki.Count));
+                                var arkusz1 = new Arkusz1()
+                                {
+                                    IdWyjazdu = ID_wyjazdu,
+                                    NazwaLeku = nazwaLeku,
+                                    IloscZuzytychLekow = iloscZuzytychLekow,
+                                    JednostkaMiary = jednostkiMiary
+                                };
+                                arkusze1.Add(arkusz1);
+                                System.Console.WriteLine(arkusz1);
+                            }
+                        }
+                        //ARKUSZ2
+                        var czasDojazdu = rand.Next(10, 40);
+                        DateTime dataPrzyjazdu = data + TimeSpan.FromMinutes(czasDojazdu * 2) + TimeSpan.FromMinutes(rand.Next(5, 15));
+                        var czyOdnalezionoPacjenta = (rand.Next(0, 10) <= 8);
+                        var czyUdzielonoPomocy = (rand.Next(0, 10) < 7);
+                        var liczbaKilometrow = rand.Next(1, 50);
+                        //jezeli jedzie karetka to moze byc jeden poszkodowany czy po prostu na miejscu wypadku liczba poszkodowanych 
+                        var liczbaCzerwonych = rand.Next(0, 2);
+                        var liczbaZoltych = rand.Next(0, 4);
+                        var liczbaZielonych = rand.Next(0, 6);
+                        var arkusz2 = new Arkusz2()
+                        {
+                            IdWyjazdu = ID_wyjazdu,
+                            DataWyjazdu = data,
+                            DataPrzyjazdu = dataPrzyjazdu,
+                            CzasDojazdu = czasDojazdu,
+                            CzyOdnalezionoPacjenta = czyOdnalezionoPacjenta,
+                            CzyUdzielonoPomocy = czyUdzielonoPomocy,
+                            LiczbaKilometrow = liczbaKilometrow,
+                            LiczbaCzerwonych = liczbaCzerwonych,
+                            LiczbaZoltych = liczbaZoltych,
+                            LiczbaZielonych = liczbaZielonych
+                        };
+                        arkusze2.Add(arkusz2);
+                        #endregion EXCEL
+            }
+            #endregion rozmowy
+
+            #region serializacja
+            string txt;
+            txt = ExtensionMethods.CSV.ToCsv(pracownicy);
+            using (var outfile = new StreamWriter("pracownicy.csv"))
+            {
+                outfile.Write(txt.ToString());
+            }
+
+            txt = ExtensionMethods.CSV.ToCsv(pojazdy);
+            using (var outfile = new StreamWriter("pojazdy.csv"))
+            {
+                outfile.Write(txt.ToString());
+            }
+
+            txt = ExtensionMethods.CSV.ToCsv(zespoly);
+            using (var outfile = new StreamWriter("zespoly.csv"))
+            {
+                outfile.Write(txt.ToString());
+            }
+
+            txt = ExtensionMethods.CSV.ToCsv(przynaleznosci);
+            using (var outfile = new StreamWriter("przynaleznosci.csv"))
+            {
+                outfile.Write(txt.ToString());
+            }
+
+            txt = ExtensionMethods.CSV.ToCsv(rozmowy);
+            using (var outfile = new StreamWriter("rozmowy.csv"))
+            {
+                outfile.Write(txt.ToString());
+            }
+
+            txt = ExtensionMethods.CSV.ToCsv(wyjazdy);
+            using (var outfile = new StreamWriter("wyjazdy.csv"))
+            {
+                outfile.Write(txt.ToString());
+            }
+
+            txt = ExtensionMethods.CSV.ToCsv(arkusze1);
+            using (var outfile = new StreamWriter("arkusze1.csv"))
+            {
+                outfile.Write(txt.ToString());
+            }
+
+            txt = ExtensionMethods.CSV.ToCsv(arkusze2);
+            using (var outfile = new StreamWriter("arkusze2.csv"))
+            {
+                outfile.Write(txt.ToString());
+            }
+
+            #endregion serializacja
         }
+
+       
     }
 }
